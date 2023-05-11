@@ -21,3 +21,9 @@
  * @copyright  2023 Tarekul Islam
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+defined('MOODLE_INTERNAL') || die();
+global $DB,$USER;
+function local_upcommingcourse_before_footer(){
+
+
+}

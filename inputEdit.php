@@ -23,17 +23,48 @@
  */
 
 
- require_once(__DIR__.'/../../config.php');
- require_once('./lib.php');
- require_once($CFG->dirroot.'/local/upcommingcourse/classes/form/inputForm.php');
+require_once(__DIR__ . '/../../config.php');
+require_once('./lib.php');
+require_once($CFG->dirroot . '/local/upcommingcourse/classes/form/inputForm.php');
 
- $id=optional_param('id', 0, PARAM_INT);
- $PAGE->set_url(new moodle_url('/local/upcommingcourse/inputEdit.php',['id'=>$id]));
- $PAGE->set_title("Entry Data");
- $PAGE->set_context(\context_system::instance());
+$id = optional_param('id', 0, PARAM_INT);
+$PAGE->set_url(new moodle_url('/local/upcommingcourse/inputEdit.php', ['id' => $id]));
+$PAGE->set_title("Entry Data");
+$PAGE->set_context(\context_system::instance());
 
- $form=new inputForm();
- echo $OUTPUT->header();
- echo $OUTPUT->heading("Input Course Details");
- $form->display();
- echo $OUTPUT->footer();
+
+$form = new inputForm();
+
+global $DB;
+if ($form->is_cancelled()) {
+
+    //back to manage page
+    redirect($CFG->wwwroot . '/local/upcommingcourse/manage.php', "");
+} else if ($fromform = $form->get_data()) {
+    $data = new stdClass();
+    $data->title = $fromform->title;
+    $data->description = $fromform->description;
+    $data->type = $fromform->type;
+
+    if ($fromform->id !="") {
+
+        $data->id = $fromform->id;
+        $DB->update_record('upcommingcourse', $data);
+        redirect($CFG->wwwroot . '/local/upcommingcourse/manage.php', "Data Updated.");
+
+    } else {
+        $DB->insert_record('upcommingcourse', $data);
+        redirect($CFG->wwwroot . '/local/upcommingcourse/manage.php', "New Announcement of Add Has been added.");
+
+    }
+
+
+}
+
+
+echo $OUTPUT->header();
+echo "<table class='table table-bordered'>";
+echo "<h1 class='bg-info p-2 text-center text-light'>Input Course Details</h1>" . "<hr>";
+$form->display();
+echo "</table>";
+echo $OUTPUT->footer();

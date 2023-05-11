@@ -22,40 +22,46 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
- require_once("$CFG->libdir/formslib.php");
+require_once("$CFG->libdir/formslib.php");
 
-class inputForm extends moodleform{
-    protected $data;
 
-    // public function __construct($aUrl,$data=NULL){
-    //     $this->data=$data;
-    //     parent::__construct($aUrl);
-    // }
 
- 
-public function definition(){
-   global $CFG;
-   $type=['Programming', 'Design','Social','Science'];
-   $form=$this->_form;
 
-   $form->addElement('hidden',  'id',  get_string('id', 'string')); 
-   $form->setType('id', PARAM_INT);
-   $form->setDefault("id",$this->data->id ?? "");
+class inputForm extends moodleform
+{
 
-   $form->addElement('text',  'title',  get_string('title', 'string'));
-   $form->settype("title",PARAM_TEXT);
-   $form->setDefault('title',$this->data->title ?? "");
-   
-   
-   $form->addElement('text',  'description',  get_string('des', 'string'), PARAM_TEXT); 
-   $form->settype("description",PARAM_TEXT);
-   $form->setDefault("description",$this->data->description ?? "");
 
-   $form->addElement('select',  'type',  get_string('type', 'string'), $type);
-   $form->setType('type',PARAM_TEXT);
-   $form->setDefault('type',0);
+    public function definition()
+    {
+        global $DB;
+        if (isset($_GET['eid'])) {
+            $data = $DB->get_record('upcommingcourse', ['id' => $_GET['eid']]);
 
-    $this->add_action_buttons();
+        }
+        global $CFG;
+        $type = ['Programming', 'Design', 'Social', 'Science'];
+        $form = $this->_form;
 
-}
+        $form->addElement('hidden', 'id', get_string('id', 'local_upcommingcourse'));
+        $form->setType('id', PARAM_INT);
+        $form->setDefault("id", $data->id ?? "");
+
+        $form->addElement('text', 'title', get_string('title', 'local_upcommingcourse'));
+        $form->settype("title", PARAM_TEXT);
+        $form->setDefault('title', $data->title ?? "");
+
+
+        $form->addElement('text', 'description', get_string('des', 'local_upcommingcourse'), PARAM_TEXT);
+        $form->settype("description", PARAM_TEXT);
+        $form->setDefault("description", $data->description ?? "");
+
+
+
+        $form->addElement('select', 'type', get_string('type', 'local_upcommingcourse'), $type);
+        $form->setType('type', PARAM_TEXT);
+        $form->setDefault('type', $data->type ?? 0);
+
+        $this->add_action_buttons();
+
+    }
 }
