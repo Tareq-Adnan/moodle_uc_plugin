@@ -33,29 +33,27 @@ class inputForm extends moodleform
 
     public function definition()
     {
-        global $DB;
+        global $DB, $CFG;
         if (isset($_GET['eid'])) {
             $data = $DB->get_record('upcommingcourse', ['id' => $_GET['eid']]);
 
         }
-        global $CFG;
+       
         $type = ['Programming', 'Design', 'Social', 'Science'];
         $form = $this->_form;
 
         $form->addElement('hidden', 'id', get_string('id', 'local_upcommingcourse'));
         $form->setType('id', PARAM_INT);
-        $form->setDefault("id", $data->id ?? "");
+        $form->setDefault("id", $data->id ?? null);
 
         $form->addElement('text', 'title', get_string('title', 'local_upcommingcourse'));
         $form->settype("title", PARAM_TEXT);
         $form->setDefault('title', $data->title ?? "");
 
 
-        $form->addElement('text', 'description', get_string('des', 'local_upcommingcourse'), PARAM_TEXT);
+        $form->addElement('text', 'description', get_string('des', 'local_upcommingcourse'));
         $form->settype("description", PARAM_TEXT);
         $form->setDefault("description", $data->description ?? "");
-
-
 
         $form->addElement('select', 'type', get_string('type', 'local_upcommingcourse'), $type);
         $form->setType('type', PARAM_TEXT);

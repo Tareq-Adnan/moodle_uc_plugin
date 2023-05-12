@@ -25,7 +25,11 @@
 
 require_once(__DIR__ . '/../../config.php');
 require_once('./lib.php');
-
+// try {
+//   require_login();
+// } catch (Exception $exception) {
+//   print_r($exception);
+// }
 
 $PAGE->set_url(new moodle_url("/local/upcommingcourse/manage.php"));
 $PAGE->set_title("Upcomming Courses Announcement Manager");
@@ -34,19 +38,19 @@ $PAGE->set_context(\context_system::instance());
 global $DB;
 echo $OUTPUT->header();
 
-$type = ['Programming', 'Design', 'Social', 'Science'];
 $info = $DB->get_records('upcommingcourse');
 
 $textContext = (object) [
 
   'messages' => array_values($info),
   'editpage' => new moodle_url("/local/upcommingcourse/inputEdit.php"),
-
-
+  
 ];
+
 echo $OUTPUT->render_from_template('local_upcommingcourse/manage', $textContext);
 if (isset($_GET['did'])) {
   $DB->delete_records('upcommingcourse', ['id' => $_GET['did']]);
+  redirect($CFG->wwwroot . '/local/upcommingcourse/manage.php');
 }
 
 echo $OUTPUT->footer();

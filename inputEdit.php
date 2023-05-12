@@ -27,9 +27,9 @@ require_once(__DIR__ . '/../../config.php');
 require_once('./lib.php');
 require_once($CFG->dirroot . '/local/upcommingcourse/classes/form/inputForm.php');
 
-$id = optional_param('id', 0, PARAM_INT);
-$PAGE->set_url(new moodle_url('/local/upcommingcourse/inputEdit.php', ['id' => $id]));
-$PAGE->set_title("Entry Data");
+
+$PAGE->set_url(new moodle_url('/local/upcommingcourse/inputEdit.php'));
+$PAGE->set_title("Entry Course Info");
 $PAGE->set_context(\context_system::instance());
 
 
@@ -41,12 +41,13 @@ if ($form->is_cancelled()) {
     //back to manage page
     redirect($CFG->wwwroot . '/local/upcommingcourse/manage.php', "");
 } else if ($fromform = $form->get_data()) {
+    
     $data = new stdClass();
     $data->title = $fromform->title;
     $data->description = $fromform->description;
     $data->type = $fromform->type;
 
-    if ($fromform->id !="") {
+    if ($fromform->id != null) {
 
         $data->id = $fromform->id;
         $DB->update_record('upcommingcourse', $data);
@@ -63,8 +64,8 @@ if ($form->is_cancelled()) {
 
 
 echo $OUTPUT->header();
-echo "<table class='table table-bordered'>";
+
 echo "<h1 class='bg-info p-2 text-center text-light'>Input Course Details</h1>" . "<hr>";
 $form->display();
-echo "</table>";
+
 echo $OUTPUT->footer();

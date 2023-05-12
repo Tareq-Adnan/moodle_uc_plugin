@@ -22,8 +22,34 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 defined('MOODLE_INTERNAL') || die();
-global $DB,$USER;
-function local_upcommingcourse_before_footer(){
+
+function local_upcommingcourse_before_footer()
+{
+    global $DB, $USER;
+    $type = ['Programming', 'Design', 'Social', 'Science'];
+
+    $sql = "SELECT uc.id, uc.title, uc.description, uc.type FROM {upcommingcourse} uc LEFT OUTER JOIN {upcomming_read} ucr ON uc.id=ucr.messageid WHERE ucr.userid != :sid OR ucr.userid IS NULL ORDER BY uc.id DESC LIMIT 1";
+    $param = [
+        'sid' => $USER->id,
+    ];
+
+    $messsage = $DB->get_records_sql($sql, $param);
+
+ if($USER->id !=0){
+    foreach ($messsage as $m) {
+
+        \core\notification::add("<h1 class='text-center text-dark'>" . $m->title . "</h1>" . "<p class='text-center'>" . $m->description . "<br>" . "Category: " . $type[(int) $m->type] . "</p>", \core\output\notification::NOTIFY_INFO);
+
+        $readdata = new stdClass();
+        $readdata->messageid = $m->id;
+        $readdata->userid = $USER->id;
+        $readdata->timeread = time();
+        $DB->insert_record('upcomming_read', $readdata);
+       
+
+    }
+ }
+    
 
 
 }
