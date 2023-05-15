@@ -27,9 +27,7 @@ require_once("$CFG->libdir/formslib.php");
 
 
 
-class inputForm extends moodleform
-{
-
+class inputForm extends moodleform{
 
     public function definition()
     {

@@ -57,7 +57,7 @@ Example context (json):
                 {{type}}</td>
             <td>
                 <a href="{{editpage}}?eid={{id}}" class="btn btn-primary">EDIT</a>
-                <a href="?did={{id}}" class="btn btn-danger">DELETE</a>
+                <a id="delete-btn-{{id}}" data-id="{{id}}" class="btn btn-danger delete-btn">DELETE</a>
             </td>
         </tr>
         {{/messages}}

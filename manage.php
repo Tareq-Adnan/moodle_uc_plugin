@@ -17,7 +17,7 @@
 /**
  * Version information
  *
- * @package    local_upcommingcourse
+ * @package    upcommingcourse
  * @copyright  2023 Tarekul Islam
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -30,10 +30,12 @@ require_once('./lib.php');
 // } catch (Exception $exception) {
 //   print_r($exception);
 // }
-
-$PAGE->set_url(new moodle_url("/local/upcommingcourse/manage.php"));
-$PAGE->set_title("Upcomming Courses Announcement Manager");
 $PAGE->set_context(\context_system::instance());
+$PAGE->set_title("Upcomming Courses Announcement Manager");
+$PAGE->set_url(new moodle_url("/local/upcommingcourse/manage.php"));
+
+
+
 
 global $DB;
 echo $OUTPUT->header();
@@ -44,13 +46,17 @@ $textContext = (object) [
 
   'messages' => array_values($info),
   'editpage' => new moodle_url("/local/upcommingcourse/inputEdit.php"),
-  
+
 ];
 
 echo $OUTPUT->render_from_template('local_upcommingcourse/manage', $textContext);
+
+
 if (isset($_GET['did'])) {
   $DB->delete_records('upcommingcourse', ['id' => $_GET['did']]);
   redirect($CFG->wwwroot . '/local/upcommingcourse/manage.php');
 }
+
+$PAGE->requires->js_call_amd('local_upcommingcourse/confirmdelete', null, array());
 
 echo $OUTPUT->footer();

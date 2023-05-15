@@ -22,6 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+ $string['pluginname']="Upcoming Course Announcement"; 
  $string['title']="Course Title"; 
  $string['des']="Course Description"; 
  $string['type']="Course Type"; 

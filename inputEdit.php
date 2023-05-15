@@ -17,7 +17,7 @@
 /**
  * Version information
  *
- * @package    local_upcommingcourse
+ * @package    upcommingcourse
  * @copyright  2023 Tarekul Islam
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -27,10 +27,10 @@ require_once(__DIR__ . '/../../config.php');
 require_once('./lib.php');
 require_once($CFG->dirroot . '/local/upcommingcourse/classes/form/inputForm.php');
 
-
+$PAGE->set_context(\context_system::instance());
 $PAGE->set_url(new moodle_url('/local/upcommingcourse/inputEdit.php'));
 $PAGE->set_title("Entry Course Info");
-$PAGE->set_context(\context_system::instance());
+
 
 
 $form = new inputForm();

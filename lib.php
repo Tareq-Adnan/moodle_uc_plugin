@@ -17,7 +17,7 @@
 /**
  * Version information
  *
- * @package    local_upcommingcourse
+ * @package    upcommingcourse
  * @copyright  2023 Tarekul Islam
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -35,21 +35,32 @@ function local_upcommingcourse_before_footer()
 
     $messsage = $DB->get_records_sql($sql, $param);
 
- if($USER->id !=0){
-    foreach ($messsage as $m) {
+    if ($USER->id != 0) {
+        foreach ($messsage as $m) {
 
-        \core\notification::add("<h1 class='text-center text-dark'>" . $m->title . "</h1>" . "<p class='text-center'>" . $m->description . "<br>" . "Category: " . $type[(int) $m->type] . "</p>", \core\output\notification::NOTIFY_INFO);
+            \core\notification::add("<h1 class='text-center text-dark'>" . $m->title . "</h1>" . "<p class='text-center'>" . $m->description . "<br>" . "Category: " . $type[(int) $m->type] . "</p>", \core\output\notification::NOTIFY_INFO);
 
-        $readdata = new stdClass();
-        $readdata->messageid = $m->id;
-        $readdata->userid = $USER->id;
-        $readdata->timeread = time();
-        $DB->insert_record('upcomming_read', $readdata);
-       
-
+            $readdata = new stdClass();
+            $readdata->messageid = $m->id;
+            $readdata->userid = $USER->id;
+            $readdata->timeread = time();
+            $DB->insert_record('upcomming_read', $readdata);
+        }
     }
- }
-    
+}
 
-
+/**
+ * This function delete a single record.
+ *
+ * @param int|null $id
+ * @return void
+ * @throws moodle_exception
+ */
+function local_upcommingcourse_delete_entry_by_id($id) {
+    global $DB;
+    try {
+        $DB->delete_records('upcommingcourse', ['id' => $id]);
+    } catch (Exception $exception) {
+        throw new moodle_exception($exception);
+    }
 }
