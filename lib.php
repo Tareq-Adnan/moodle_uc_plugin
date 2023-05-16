@@ -56,11 +56,34 @@ function local_upcommingcourse_before_footer()
  * @return void
  * @throws moodle_exception
  */
-function local_upcommingcourse_delete_entry_by_id($id) {
+function local_upcommingcourse_delete_entry_by_id($id)
+{
     global $DB;
     try {
         $DB->delete_records('upcommingcourse', ['id' => $id]);
     } catch (Exception $exception) {
         throw new moodle_exception($exception);
+    }
+}
+
+function local_upcommingcourse_get_data()
+{
+    global $DB;
+
+    try {
+        $info = $DB->get_records('upcommingcourse');
+    //     $data=new stdClass();
+    //    // foreach($info as $m){
+    //         $data->id=$info->id;
+    //         $data->title=$info->title;
+    //         $data->description=$info->description;
+    //         $data->type=$info->type;
+        //}
+       // $data = $DB->get_records('upcommingcourse');
+        
+        return $info;
+
+    } catch (Exception $e) {
+        throw new moodle_exception($e);
     }
 }

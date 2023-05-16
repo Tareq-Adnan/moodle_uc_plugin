@@ -51,12 +51,6 @@ $textContext = (object) [
 
 echo $OUTPUT->render_from_template('local_upcommingcourse/manage', $textContext);
 
-
-if (isset($_GET['did'])) {
-  $DB->delete_records('upcommingcourse', ['id' => $_GET['did']]);
-  redirect($CFG->wwwroot . '/local/upcommingcourse/manage.php');
-}
-
 $PAGE->requires->js_call_amd('local_upcommingcourse/confirmdelete', null, array());
 
 echo $OUTPUT->footer();

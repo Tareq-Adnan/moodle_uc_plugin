@@ -21,7 +21,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once($CFG->libdir ."/externallib.php");
+require_once($CFG->libdir . "/externallib.php");
 require_once($CFG->dirroot . "/local/upcommingcourse/lib.php");
 
 
@@ -73,6 +73,73 @@ class local_upcommingcourse_external extends external_api
                 'id' => new external_value(PARAM_INT, 'id'),
                 'warnings' => new external_warnings()
             )
+        );
+    }
+
+
+    // fetch_all_data
+
+
+    /**
+     * Returns description of method parameters.
+     * @return external_function_parameters
+     */
+    public static function get_all_data_parameters(): external_function_parameters
+    {
+        return new external_function_parameters(
+            array()
+        );
+    }
+
+    /**
+     * 
+     *
+     * @param int 
+     * @return array
+     * @throws moodle_exception
+     */
+    public static function get_all_data(): array
+    {
+
+
+        // $result = json_decode($data, true);
+        $data = local_upcommingcourse_get_data();
+        
+        $upcomingcourses = [];
+
+        foreach($data as $a){
+            array_push($upcomingcourses, $a);  
+        }
+
+        // var_dump($result);
+        $result = [];
+        $result['courseInfo'] = $upcomingcourses;
+
+        return $result;
+
+    }
+
+    /**
+     * Returns description of method result value.
+     * @return external_description
+     */
+    public static function get_all_data_returns()
+    {
+        return new external_single_structure(
+            array(
+                'courseInfo' => new external_multiple_structure(self::get_data_structure(), 'courseInfo', VALUE_OPTIONAL),
+            )
+            );
+    }
+
+    static function get_data_structure() {
+        return new external_single_structure(
+            array(
+                'id' => new external_value(PARAM_RAW, 'id', VALUE_OPTIONAL),
+                'title' => new external_value(PARAM_RAW, 'title', VALUE_OPTIONAL),
+                'description' => new external_value(PARAM_RAW, 'description', VALUE_OPTIONAL),
+                'type' => new external_value(PARAM_RAW, 'type', VALUE_OPTIONAL),
+                )
         );
     }
 }

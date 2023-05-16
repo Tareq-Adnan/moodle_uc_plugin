@@ -16,5 +16,15 @@ $functions = array(
         'type' => 'write',
         'ajax' => true,
         'services' => array(MOODLE_OFFICIAL_MOBILE_SERVICE),
+    ),
+    'local_upcommingcourse_get_data' => array(
+        'classname' => 'local_upcommingcourse_external',
+        'methodname' => 'get_all_data',
+        'classpath' => 'local/upcommingcourse/external.php',
+        'description' => 'Fetch all data from database',
+        'type' => 'read',
+        'ajax' => true,
+        'services' => array(MOODLE_OFFICIAL_MOBILE_SERVICE),
     )
+
 );

@@ -36,9 +36,13 @@ class inputForm extends moodleform{
             $data = $DB->get_record('upcommingcourse', ['id' => $_GET['eid']]);
 
         }
+
+        
        
         $type = ['Programming', 'Design', 'Social', 'Science'];
         $form = $this->_form;
+        $form->addElement('filemanager', 'draftid', get_string('draftid', 'local_dcms')); // Add elements to your form
+        $form->addRule('draftid', get_string('required'), 'required', null, 'client');
 
         $form->addElement('hidden', 'id', get_string('id', 'local_upcommingcourse'));
         $form->setType('id', PARAM_INT);
